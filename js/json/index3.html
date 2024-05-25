@@ -16,6 +16,11 @@
             var dataJSON = '';
             var output = document.getElementById("output");
             var taskList = document.querySelector('#taskList');
+            document.getElementById("myForm").addEventListener('submit', function(e) {
+                e.preventDefault();
+                var tempValue = document.querySelector('input[name="task"]').value;
+                addNewItem({"info":tempValue, "status": false})
+            });
 
             window.onload = function() {
                 if (sessionStorage['task'] != null) {
@@ -25,6 +30,11 @@
                     dataJSON = JSON.parse(data);
                 }
                 buildCheckboxes(dataJSON)
+            }
+
+            function addNewItem(data) {
+                taskList.innerHTML += '<li>' + data.info + '<input type="checkbox" value="' + dataJSON.length + '" '+ status + '></li>';
+                dataJSON.push(data);
             }
 
             function buildCheckboxes(data) {
