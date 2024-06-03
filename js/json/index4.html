@@ -9,9 +9,11 @@
     <div id="output">
         <ul id="taskList"></ul>
     </div>
-    <form id="myForm"> Task :
+    <form id="myForm">
+        Task :
         <input type="text" name="task" placeholder="add task">
-        <input type="submit" value="Add new Task"> </form>
+        <input type="submit" value="Add new Task">
+    </form>
     <script type="text/javascript">
         var dataJSON = '';
         var output = document.getElementById('output');
@@ -29,11 +31,23 @@
                 dataJSON = JSON.parse(sessionStorage['tasklist']);
                 buildCheckboxes(dataJSON)
             } else {
-                var data = '[{"info":"Cut the Grass","status":false},{"info":"Clean Room","status":true},{"info":"Go to Gym","status":false},{"info":"Make Dinner","status":false}]';
-                dataJSON = JSON.parse(data);
-                buildCheckboxes(dataJSON)
+                makeDataRequest();
             }
         }
+
+        function makeDataRequest() {
+            const url = "db.json";
+            fetch(url)
+            .then(function(res) {
+                return res.json();
+            })
+            .then(function(data) {
+                console.log(data);
+                dataJSON = data;
+                buildCheckboxes(dataJSON);
+            })
+        }
+
         function addNewItem(data) {
             addCheckbox(data, dataJSON.length);
             dataJSON.push(data);
@@ -58,8 +72,9 @@
         function remove(event) {
             var index = this.previousElementSibling.value;
             taskList.innerHTML = '';
-            dataJSON.splice(index, 1)
-            buildCheckboxes(dataJSON)
+            dataJSON.splice(index, 1);
+            sessionStorage['tasklist'] = JSON.stringify(dataJSON);
+            buildCheckboxes(dataJSON);
         }
         function buildCheckboxes(data) {
             for (var key in data) {
