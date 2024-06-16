@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Learn AJAX</title>
+</head>
+<body>
+    <h1>Learn AJAX jQuery</h1>
+    <div id="output"></div>
+    <form id="myForm">
+        First name:<input type="text" name="first" value="Jensen"><br/>
+        Last name:<input type="text" name="last" value="Alimukti"><br/>
+        <input type="submit" value="submit data">
+    </form>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script>
+        $('#myForm').submit(function(e) {
+            e.preventDefault();
+            var first = $('input[name="first"]').val();
+            var last = $('input[name="last"]').val();
+            var url = 'http://s179017901.onlinehome.us/discoveryvip/';
+            // $.post(url, {
+            //     first: first,
+            //     last: last
+            // }).done(function(data) {
+            //     console.log(data);
+            // })
+
+            $.ajax({
+                url: url,
+                type: 'post',
+                data: {first: first, last: last},
+                success: function(data) {
+                    console.log(data);
+                }
+            })
+        })
+    </script>
+</body>
+</html>

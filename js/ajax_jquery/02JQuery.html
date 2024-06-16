@@ -15,12 +15,17 @@
 
         function webData() {
             var url = 'https://api.spacexdata.com/v2/launches/'
-            $.get(url,output)
+            $.getJSON(url, output)
         }
-        
+
         function output(data) {
-            console.log(data[1])
-            $('#output').html('<h2>' + data[1].flight_number + '</h2><p>' + data[1].details + '</p>')
+            var html;
+            $.each(data, function(k, v) {
+                html += '<h3>Flight number ' + v.flight_number + '</h3>';
+                html += 'Details: ' + v.details + '<br>';
+            })
+
+            $('#output').html(html);
         }
     </script>
 </body>
