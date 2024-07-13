@@ -1,0 +1,42 @@
+<html>
+    <head>
+        <title>AJAX youtube</title>
+    </head>
+    <body>
+        <h1>AJAX information API Application</h1>
+        <input type="text" name="searchTerm" value="Javascript" id="searchTerm">
+        <input type="button" id="search" value="search">
+        <div id="output"></div>
+
+        <script>
+            window.onload = function() {
+                document.querySelector('#search').addEventListener('click', showResults);
+            }
+
+            function showResults() {
+                var searchTerm = document.querySelector('input[name="searchTerm"]').value;
+                var url = 'https://en.wikipedia.org/w/api.php?format=json&action=opensearch&origin=*&search=' + searchTerm;
+                var output = document.querySelector('#output');
+                output.innerHTML = "<h2>Search term " + searchTerm + "</h2>";
+                ajaxJS(url, function(response) {
+                    for (var x in response) {
+                        var holder = typeof response[x] == 'string' ? response[x] : response[x][0];
+                        output.innerHTML += '<div class="dataOutput">' + holder + '</div>';
+                    }
+                });
+            }
+
+            function ajaxJS(url, callback) {
+                var xhr = new XMLHttpRequest();
+                xhr.onreadystatechange = function() {
+                    if (xhr.readyState == 4 && xhr.status == 200) {
+                        callback(JSON.parse(xhr.responseText));
+                    }
+                }
+
+                xhr.open('GET', url, true);
+                xhr.send();
+            }
+        </script>
+    </body>
+</html>
